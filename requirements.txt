@@ -1,1 +1,11 @@
--r requirements.d/prod.txt
+coverage-enable-subprocess
+coverage
+
+argparse
+
+##pytest
+# pending release of https://github.com/pytest-dev/pytest/pull/1124
+# "tests of (and fixes for) Config.fromdictargs"
+-e git+git://github.com/bukzor/pytest.git@eabf2f9#egg=pytest
+
+pytest-xdist

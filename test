@@ -1,29 +1,12 @@
 #!/bin/bash
 set -ex
-export TOP=$(readlink -f ${TOP:-.})
-export SITEPACKAGES=${SITEPACKAGES:-.}
-export PROJECT=venv_update
-NCPU=200
-
-if [ -z "$*" ]; then
-    # default arguments
-    set $TOP/tests
-fi
 
 # clean up anything left behind from before:
-coverage combine --rcfile=$TOP/.coveragerc
-coverage erase --rcfile=$TOP/.coveragerc
+rm -f .coverage .coverage.*
 
 # See: http://nedbatchelder.com/code/coverage/subprocess.html
-export COVERAGE_PROCESS_START=$TOP/.coveragerc
-
-# run the tests!
 # the verbose flag seems to be essential to reproducing my issue.
-py.test -vvv -n $NCPU "$@"
-unset COVERAGE_PROCESS_START
-
-# reporting:
-cd $TOP
+COVERAGE_PROCESS_START=.coveragerc py.test -vvv -n 200 "$@" ./tests
 
 coverage combine
 coverage report --fail-under 100

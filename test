@@ -5,7 +5,8 @@ set -ex
 rm -f .coverage .coverage.*
 
 # See: http://nedbatchelder.com/code/coverage/subprocess.html
-COVERAGE_PROCESS_START=.coveragerc py.test -n 100 "$@" ./tests
+# the verbose flag seems to be essential to reproducing my issue.
+COVERAGE_PROCESS_START=.coveragerc py.test -vvv -n 200 "$@" ./tests
 
 coverage combine
 coverage report --fail-under 100

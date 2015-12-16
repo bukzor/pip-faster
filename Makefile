@@ -1,21 +1,13 @@
 .PHONY: all
-all: lint test
-
-.PHONY: lint
-lint:
-	pre-commit run --all-files
+all: test
 
 .PHONY: test tests
 test tests: venv
 	. venv-venv_update/bin/activate && ./test $(ARGS)
 
-.PHONY: tox
-tox:
-	tox -e lint,test
-
 .PHONY: venv
 venv: venv-venv_update
-venv-venv_update: setup.py requirements.d/* Makefile
+venv-venv_update: requirements.d/* Makefile
 	rm -rf venv-venv_update
 	virtualenv --python=python2.7 venv-venv_update
 	rm -rf venv-venv_update/local

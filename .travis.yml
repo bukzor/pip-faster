@@ -1,6 +1,4 @@
 language: python
-env:
-    - TOXENV=python
 python:
     # in order of most-valuable tests first
     - "3.5"
@@ -8,29 +6,13 @@ python:
     - "2.7"
     - "3.4"
 
-addons:
-    apt:
-        sources:
-            - deadsnakes
-        packages:
-            - python2.6-dev
-            - python2.7-dev
-            - python3.3-dev
-
 matrix:
     # notify a failed build as soon as anything fails
     fast_finish: true
 
-install: pip install -r requirements.d/travis.txt
-script: tox
-after_success:
-    - coveralls
-
+install: pip install -r requirements.d/test.txt
+script: ./test
 
 # sudo:false gives us the new, faster cluster and enables caches for public repos
 # http://docs.travis-ci.com/user/workers/container-based-infrastructure/
 sudo: false
-cache:
-    directories:
-        - $HOME/.pip
-        - $HOME/.pre-commit

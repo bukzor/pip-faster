@@ -3,7 +3,7 @@ set -ex
 export TOP=$(readlink -f ${TOP:-.})
 export SITEPACKAGES=${SITEPACKAGES:-.}
 export PROJECT=venv_update
-NCPU=100
+NCPU=200
 
 if [ -z "$*" ]; then
     # default arguments
@@ -18,7 +18,8 @@ coverage erase --rcfile=$TOP/.coveragerc
 export COVERAGE_PROCESS_START=$TOP/.coveragerc
 
 # run the tests!
-py.test -n $NCPU "$@"
+# the verbose flag seems to be essential to reproducing my issue.
+py.test -vvv -n $NCPU "$@"
 unset COVERAGE_PROCESS_START
 
 # reporting:

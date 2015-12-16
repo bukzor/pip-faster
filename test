@@ -3,40 +3,26 @@ set -ex
 export TOP=$(readlink -f ${TOP:-.})
 export SITEPACKAGES=${SITEPACKAGES:-.}
 export PROJECT=venv_update
-NCPU=$(getconf _NPROCESSORS_CONF)
-
-if python -c 'import platform; exit(not(platform.python_implementation() == "PyPy"))'; then
-    PYPY=true
-else
-    PYPY=false
-fi
+NCPU=100
 
 if [ -z "$*" ]; then
     # default arguments
     set $TOP/tests
 fi
 
-if $PYPY; then
-    # coverage under pypy takes too dang long:
-    #   https://bitbucket.org/pypy/pypy/issue/1871/10x-slower-than-cpython-under-coverage#comment-14404182
-    # Having issues with memory, let's try reducing CPUs by half
-    py.test -n $((NCPU / 3)) "$@"
-else
-    # clean up anything left behind from before:
-    coverage combine --rcfile=$TOP/.coveragerc
-    coverage erase --rcfile=$TOP/.coveragerc
+# clean up anything left behind from before:
+coverage combine --rcfile=$TOP/.coveragerc
+coverage erase --rcfile=$TOP/.coveragerc
 
-    # See: http://nedbatchelder.com/code/coverage/subprocess.html
-    export COVERAGE_PROCESS_START=$TOP/.coveragerc
+# See: http://nedbatchelder.com/code/coverage/subprocess.html
+export COVERAGE_PROCESS_START=$TOP/.coveragerc
 
-    # run the tests!
-    py.test -n $NCPU "$@"
+# run the tests!
+py.test -n $NCPU "$@"
+unset COVERAGE_PROCESS_START
 
-    # reporting:
-    cd $TOP
-    coverage combine
-    unset COVERAGE_PROCESS_START
-    coverage combine
-    
-    coverage report --fail-under 100
-fi
+# reporting:
+cd $TOP
+
+coverage combine
+coverage report --fail-under 100

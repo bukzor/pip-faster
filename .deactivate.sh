@@ -1,2 +1,0 @@
-deactivate
-unset TOP

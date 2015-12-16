@@ -13,7 +13,7 @@ fi
 
 if [ -z "$*" ]; then
     # default arguments
-    set $TOP/tests $SITEPACKAGES/${PROJECT}.py
+    set $TOP/tests
 fi
 
 if $PYPY; then
@@ -35,12 +35,8 @@ else
     # reporting:
     cd $TOP
     coverage combine
-    python ./tests/testing/fix_coverage.py '/site-packages/' $TOP
     unset COVERAGE_PROCESS_START
     coverage combine
     
-    # for unknown reasons, I have to do the fixup again after stopping profiling to avoid stray test results
-    python ./tests/testing/fix_coverage.py '/site-packages/' $TOP
-
-    coverage report --fail-under 95  # FIXME: should be 100
+    coverage report --fail-under 100
 fi

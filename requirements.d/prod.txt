@@ -1,1 +1,0 @@
-# minimal set of packages for end-users

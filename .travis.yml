@@ -6,11 +6,6 @@ python:
     - "2.7"
     - "3.4"
 
-matrix:
-    # notify a failed build as soon as anything fails
-    fast_finish: true
-
-install: pip install -r requirements.d/test.txt
 script: ./test
 
 # sudo:false gives us the new, faster cluster and enables caches for public repos

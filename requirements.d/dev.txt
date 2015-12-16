@@ -1,7 +1,0 @@
-# minimal set of packages for committers
--e .
--r test.txt
--r _lint.txt
-
-# <2 -- https://bitbucket.org/hpk42/tox/issue/246
-tox>=1.9,<2

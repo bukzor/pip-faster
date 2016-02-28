@@ -1,7 +1,13 @@
-all: .tox/venv
-	. ./.tox/venv/bin/activate && ./test
+.PHONY: demo
+demo: venv
+	. ./venv/bin/activate && ./demo.sh
 
-.tox/venv: Makefile requirements.txt
-	rm -rf .tox/venv
-	virtualenv .tox/venv
-	./.tox/venv/bin/pip install -r requirements.txt
+
+.PHONY: test
+test: venv
+	. ./venv/bin/activate && ./test
+
+venv: Makefile requirements.txt
+	rm -rf venv
+	virtualenv venv
+	./venv/bin/pip install -r requirements.txt

@@ -1,7 +1,4 @@
 coverage-enable-subprocess
 coverage
 
-argparse
-
-pytest
-pytest-xdist
+execnet

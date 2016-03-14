@@ -18,7 +18,7 @@ PYTHONPATH=$TOP \
 
 for cov in cov.*; do
     export COVERAGE_FILE=$cov
-    if coverage report --fail-under 100 $TOP/one_test.py > ${COVERAGE_FILE}.report; then
+    if coverage report --fail-under 100 $TOP/myscript.py > ${COVERAGE_FILE}.report; then
         exit 0
     fi
 done

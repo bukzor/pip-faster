@@ -1,6 +1,9 @@
 #!/bin/bash
+# This script sometimes fails when run concurrently with itself.  (see demo.sh)
 set -eu
-SEQ="$1"
+export TOP=$(dirname $(readlink -f $0))
+export LOGS=$PWD/logs-${NOW:-$(date +"%F-%T.%N")}
+SEQ="${1:-0}"
 DEMO=$LOGS/$SEQ
 rm -rf $DEMO
 mkdir -p $DEMO
@@ -8,6 +11,7 @@ cd $DEMO
 
 echo $DEMO
 
+# run coverage, with all the debugging options I could find enabled.
 PYTHONPATH=$TOP \
     EXECNET_DEBUG=2 \
     COVERAGE_FILE=$DEMO/cov \
@@ -25,9 +29,11 @@ done
 
 echo "
 
-====================================================================================
+===============================================================================
 FAILED: $DEMO
-====================================================================================
+===============================================================================
 
 " | tee failure
+
+# we must exit with 255 to make xargs stop.
 exit 255
